@@ -132,7 +132,6 @@ class SqlHelper(ISqlHelper):
         else:
             return query.order_by(Proxy.score.desc(), Proxy.speed).all()
 
-
     def close(self):
         pass
 
