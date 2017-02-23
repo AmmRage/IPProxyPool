@@ -103,12 +103,12 @@ class SqlHelper(ISqlHelper):
 
 
     def select(self, count=None, conditions=None):
-        '''
+        """
         conditions的格式是个字典。类似self.params
         :param count:
         :param conditions:
         :return:
-        '''
+        """
         if conditions:
             conditon_list = []
             for key in list(conditions.keys()):

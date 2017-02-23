@@ -4,7 +4,7 @@ from multiprocessing import Queue
 try:
     q = Queue()
     q.get(timeout=5)
-except BaseException, e:
+except BaseException as e:
     print
     '--' + str(e)
 

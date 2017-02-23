@@ -148,7 +148,7 @@ def getMyIP():
 
 
 if __name__ == '__main__':
-    getMyIP()
+    print(getMyIP())
     # str="{ip:'61.150.43.121',address:'陕西省西安市 西安电子科技大学'}"
     # j = json.dumps(str)
     # str = j['ip']
