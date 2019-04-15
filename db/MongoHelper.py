@@ -1,29 +1,26 @@
 import pymongo
-from config import DB_CONFIG
+from config import DB_CONFIG, DEFAULT_SCORE
 
 from db.ISqlHelper import ISqlHelper
 
 
 class MongoHelper(ISqlHelper):
     def __init__(self):
-        self.client = pymongo.MongoClient(DB_CONFIG['DB_CONNECT_STRING'])
+        self.client = pymongo.MongoClient(DB_CONFIG['DB_CONNECT_STRING'], connect=False)
 
     def init_db(self):
         self.db = self.client.proxy
         self.proxys = self.db.proxys
 
-
     def drop_db(self):
         self.client.drop_database(self.db)
-
 
     def insert(self, value=None):
         if value:
             proxy = dict(ip=value['ip'], port=value['port'], types=value['types'], protocol=value['protocol'],
                          country=value['country'],
-                         area=value['area'], speed=value['speed'], score=0)
+                         area=value['area'], speed=value['speed'], score=DEFAULT_SCORE)
             self.proxys.insert(proxy)
-
 
     def delete(self, conditions=None):
         if conditions:
@@ -31,7 +28,6 @@ class MongoHelper(ISqlHelper):
             return ('deleteNum', 'ok')
         else:
             return ('deleteNum', 'None')
-
 
     def update(self, conditions=None, value=None):
         # update({"UserName":"libing"},{"$set":{"Email":"libing@126.com","Password":"123"}})
@@ -48,6 +44,8 @@ class MongoHelper(ISqlHelper):
             count = 0
         if conditions:
             conditions = dict(conditions)
+            if 'count' in conditions:
+                del conditions['count']
             conditions_name = ['types', 'protocol']
             for condition_name in conditions_name:
                 value = conditions.get(condition_name, None)

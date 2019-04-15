@@ -3,7 +3,7 @@ import datetime
 from sqlalchemy import Column, Integer, String, DateTime, Numeric, create_engine, VARCHAR
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from config import DB_CONFIG
+from config import DB_CONFIG, DEFAULT_SCORE
 
 from db.ISqlHelper import ISqlHelper
 
@@ -27,7 +27,7 @@ class Proxy(BaseModel):
     area = Column(VARCHAR(100), nullable=False)
     updatetime = Column(DateTime(), default=datetime.datetime.utcnow)
     speed = Column(Numeric(5, 2), nullable=False)
-    score = Column(Integer, nullable=False, default=0)
+    score = Column(Integer, nullable=False, default=DEFAULT_SCORE)
 
 
 class SqlHelper(ISqlHelper):
@@ -139,6 +139,8 @@ class SqlHelper(ISqlHelper):
 if __name__ == '__main__':
     sqlhelper = SqlHelper()
     sqlhelper.init_db()
-    proxy = {'ip': '192.168.1.1', 'port': 80, 'type': 0, 'protocol': 0, 'country': '中国', 'area': '广州', 'speed': 11.123}
+    proxy = {'ip': '192.168.1.1', 'port': 80, 'type': 0, 'protocol': 0, 'country': '中国', 'area': '广州', 'speed': 11.123, 'types': ''}
     sqlhelper.insert(proxy)
+    sqlhelper.update({'ip': '192.168.1.1', 'port': 80}, {'score': 10})
+    print(sqlhelper.select(1))
 
